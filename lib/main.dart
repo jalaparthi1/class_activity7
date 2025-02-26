@@ -93,38 +93,36 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AnimatedOpacity(
-              opacity: _isVisible ? 1.0 : 0.0,
-              duration: Duration(seconds: 2),
-              curve: Curves.easeInOut,
-              child: Transform.rotate(
-                angle: _rotationAngle,
-                child: Text(
-                  'Hello, Flutter!',
-                  style: TextStyle(fontSize: 24, color: _textColor),
+      body: GestureDetector(
+        onHorizontalDragEnd: (_) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => SecondScreen()),
+          );
+        },
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AnimatedOpacity(
+                opacity: _isVisible ? 1.0 : 0.0,
+                duration: Duration(seconds: 2),
+                curve: Curves.easeInOut,
+                child: Transform.rotate(
+                  angle: _rotationAngle,
+                  child: Text(
+                    'Hello, Flutter!',
+                    style: TextStyle(fontSize: 24, color: _textColor),
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: rotateText,
-              child: Text('Rotate Text'),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SecondScreen()),
-                );
-              },
-              child: Text('Go to Second Screen'),
-            ),
-          ],
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: rotateText,
+                child: Text('Rotate Text'),
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -135,65 +133,26 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class SecondScreen extends StatefulWidget {
-  @override
-  _SecondScreenState createState() => _SecondScreenState();
-}
-
-class _SecondScreenState extends State<SecondScreen> {
-  bool _isVisible = true;
-  double _rotationAngle = 0;
-
-  void toggleVisibility() {
-    setState(() {
-      _isVisible = !_isVisible;
-    });
-  }
-
-  void rotateText() {
-    setState(() {
-      _rotationAngle += pi / 4;
-    });
-  }
-
+class SecondScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Second Animation')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AnimatedOpacity(
-              opacity: _isVisible ? 1.0 : 0.0,
-              duration: Duration(seconds: 3),
-              curve: Curves.bounceInOut,
-              child: Transform.rotate(
-                angle: _rotationAngle,
-                child: Text(
-                  'Another Fading & Rotating Text!',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-              ),
+      body: GestureDetector(
+        onHorizontalDragEnd: (_) {
+          Navigator.pop(context);
+        },
+        child: Center(
+          child: AnimatedOpacity(
+            opacity: 1.0,
+            duration: Duration(seconds: 3),
+            curve: Curves.bounceInOut,
+            child: Text(
+              'Welcome to Second Screen!',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: rotateText,
-              child: Text('Rotate Text'),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('Back to First Screen'),
-            ),
-          ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: toggleVisibility,
-        child: Icon(Icons.play_arrow),
       ),
     );
   }
