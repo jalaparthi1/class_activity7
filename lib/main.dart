@@ -132,7 +132,7 @@ class _SecondScreenState extends State<SecondScreen> {
         child: AnimatedOpacity(
           opacity: _isVisible ? 1.0 : 0.0,
           duration: Duration(seconds: 2),
-          curve: Curves.easeInOut,
+          curve: Curves.bounceIn,
           child: Text(
             'Another Fading Text!',
             style: TextStyle(fontSize: 24),
