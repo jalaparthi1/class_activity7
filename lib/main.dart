@@ -181,7 +181,7 @@ class _SecondScreenState extends State<SecondScreen> {
               onPressed: rotateText,
               child: Text('Rotate Text'),
             ),
-            SizedBox(width: 100,),
+            SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
