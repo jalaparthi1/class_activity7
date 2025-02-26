@@ -114,6 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: rotateText,
               child: Text('Rotate Text'),
             ),
+            SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -180,6 +181,7 @@ class _SecondScreenState extends State<SecondScreen> {
               onPressed: rotateText,
               child: Text('Rotate Text'),
             ),
+            SizedBox(width: 100,),
             ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
