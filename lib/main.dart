@@ -16,6 +16,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: isDarkMode ? ThemeData.dark() : ThemeData.light(),
       home: HomeScreen(toggleTheme: () {
         setState(() {
@@ -37,7 +38,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool _isVisible = true;
-  Color _textColor = Colors.black;
+  Color _textColor = Colors.blue;
 
   void toggleVisibility() {
     setState(() {
@@ -92,13 +93,18 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         },
         child: Center(
-          child: AnimatedOpacity(
-            opacity: _isVisible ? 1.0 : 0.0,
-            duration: Duration(seconds: 1),
-            child: Text(
-              'Hello, Flutter!',
-              style: TextStyle(fontSize: 24, color: _textColor),
-            ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AnimatedOpacity(
+                opacity: _isVisible ? 1.0 : 0.0,
+                duration: Duration(seconds: 1),
+                child: Text(
+                  'Hello, Flutter!',
+                  style: TextStyle(fontSize: 24, color: _textColor),
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -132,10 +138,10 @@ class _SecondScreenState extends State<SecondScreen> {
         child: AnimatedOpacity(
           opacity: _isVisible ? 1.0 : 0.0,
           duration: Duration(seconds: 2),
-          curve: Curves.bounceIn,
+          curve: Curves.easeInOut,
           child: Text(
             'Another Fading Text!',
-            style: TextStyle(fontSize: 24),
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
         ),
       ),
