@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'dart:math';
 
 void main() {
   runApp(MyApp());
@@ -39,6 +40,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool _isVisible = true;
   Color _textColor = Colors.blue;
+  double _rotationAngle = 0;
 
   void toggleVisibility() {
     setState(() {
@@ -52,11 +54,17 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void rotateText() {
+    setState(() {
+      _rotationAngle += pi / 4;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Fading Text Animation'),
+        title: Text('Fading & Rotating Text Animation'),
         actions: [
           IconButton(
             icon: Icon(Icons.color_lens),
@@ -85,27 +93,37 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: GestureDetector(
-        onHorizontalDragEnd: (_) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => SecondScreen()),
-          );
-        },
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AnimatedOpacity(
-                opacity: _isVisible ? 1.0 : 0.0,
-                duration: Duration(seconds: 1),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AnimatedOpacity(
+              opacity: _isVisible ? 1.0 : 0.0,
+              duration: Duration(seconds: 2),
+              curve: Curves.easeInOut,
+              child: Transform.rotate(
+                angle: _rotationAngle,
                 child: Text(
                   'Hello, Flutter!',
                   style: TextStyle(fontSize: 24, color: _textColor),
                 ),
               ),
-            ],
-          ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: rotateText,
+              child: Text('Rotate Text'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SecondScreen()),
+                );
+              },
+              child: Text('Go to Second Screen'),
+            ),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -123,10 +141,17 @@ class SecondScreen extends StatefulWidget {
 
 class _SecondScreenState extends State<SecondScreen> {
   bool _isVisible = true;
+  double _rotationAngle = 0;
 
   void toggleVisibility() {
     setState(() {
       _isVisible = !_isVisible;
+    });
+  }
+
+  void rotateText() {
+    setState(() {
+      _rotationAngle += pi / 4;
     });
   }
 
@@ -135,14 +160,33 @@ class _SecondScreenState extends State<SecondScreen> {
     return Scaffold(
       appBar: AppBar(title: Text('Second Animation')),
       body: Center(
-        child: AnimatedOpacity(
-          opacity: _isVisible ? 1.0 : 0.0,
-          duration: Duration(seconds: 2),
-          curve: Curves.easeInOut,
-          child: Text(
-            'Another Fading Text!',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AnimatedOpacity(
+              opacity: _isVisible ? 1.0 : 0.0,
+              duration: Duration(seconds: 3),
+              curve: Curves.bounceInOut,
+              child: Transform.rotate(
+                angle: _rotationAngle,
+                child: Text(
+                  'Another Fading & Rotating Text!',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: rotateText,
+              child: Text('Rotate Text'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Back to First Screen'),
+            ),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
