@@ -94,11 +94,14 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: GestureDetector(
-        onHorizontalDragEnd: (_) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => SecondScreen()),
-          );
+        onPanUpdate: (details) {
+          // Detect left swipe to navigate to the second screen
+          if (details.delta.dx < -10) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SecondScreen()),
+            );
+          }
         },
         child: Center(
           child: Column(
@@ -111,15 +114,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Transform.rotate(
                   angle: _rotationAngle,
                   child: Text(
-                    'Hello, Flutter!',
+                    'Swipe left to next screen →',
                     style: TextStyle(fontSize: 24, color: _textColor),
                   ),
                 ),
               ),
               SizedBox(height: 20),
               ElevatedButton(
-                onPressed: rotateText,
-                child: Text('Rotate Text'),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SecondScreen()),
+                  );
+                },
+                child: Text('Go to Second Screen'),
               ),
             ],
           ),
@@ -139,18 +147,33 @@ class SecondScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text('Second Animation')),
       body: GestureDetector(
-        onHorizontalDragEnd: (_) {
-          Navigator.pop(context);
+        onPanUpdate: (details) {
+          // Detect right swipe to navigate back to the first screen
+          if (details.delta.dx > 10) {
+            Navigator.pop(context);
+          }
         },
         child: Center(
-          child: AnimatedOpacity(
-            opacity: 1.0,
-            duration: Duration(seconds: 3),
-            curve: Curves.bounceInOut,
-            child: Text(
-              'Welcome to Second Screen!',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AnimatedOpacity(
+                opacity: 1.0,
+                duration: Duration(seconds: 3),
+                curve: Curves.bounceInOut,
+                child: Text(
+                  '← Swipe right to go back',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Back to First Screen'),
+              ),
+            ],
           ),
         ),
       ),
